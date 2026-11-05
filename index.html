@@ -195,6 +195,145 @@
       .day-count { min-width: 29px; font-size: 9px; }
       .days-count { padding: 6px 8px; font-size: 9px; }
     }
+
+    :root {
+      color-scheme: dark;
+      --bg: #0a100c;
+      --panel: #111a14;
+      --panel-soft: #17231a;
+      --line: #29382c;
+      --text: #f3f5ef;
+      --muted: #a0ad9f;
+      --green: #c4f277;
+      --green-dark: #23351d;
+      --orange: #f3b77f;
+      --red: #ed9384;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse at 12% 0%, rgb(91 126 57 / 14%), transparent 34rem),
+        radial-gradient(ellipse at 92% 30%, rgb(39 82 54 / 10%), transparent 32rem),
+        var(--bg);
+    }
+
+    .shell { max-width: 1360px; padding-top: 30px; }
+    header { border-color: rgb(160 180 157 / 16%); }
+    .brand { font-size: 17px; }
+    .brand-mark {
+      border: 1px solid rgb(255 255 255 / 15%);
+      border-radius: 14px;
+      box-shadow: 0 5px 20px rgb(196 242 119 / 16%);
+    }
+    .season-tag {
+      border-color: rgb(160 180 157 / 20%);
+      background: rgb(17 26 20 / 78%);
+      color: #c4cfbf;
+    }
+
+    .hero { gap: 40px; margin-top: 50px; margin-bottom: 32px; }
+    .eyebrow { color: var(--green); }
+    h1 { max-width: 760px; font-size: clamp(42px, 6vw, 76px); }
+    .intro { max-width: 570px; font-size: 15px; }
+    .date-note {
+      border-color: rgb(160 180 157 / 20%);
+      border-radius: 17px;
+      background: linear-gradient(145deg, #172319, #111a14 75%);
+      box-shadow: 0 12px 36px rgb(0 0 0 / 14%);
+    }
+    .date-note strong { font-size: 15px; }
+
+    .overview { gap: 16px; margin-bottom: 24px; }
+    .metric {
+      min-height: 150px;
+      padding: 23px;
+      border-color: rgb(160 180 157 / 17%);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgb(20 30 23 / 96%), rgb(15 23 18 / 96%));
+      box-shadow: 0 10px 28px rgb(0 0 0 / 12%);
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .metric:hover { transform: translateY(-2px); border-color: rgb(196 242 119 / 30%); }
+    .metric:first-child {
+      border-color: rgb(196 242 119 / 25%);
+      background: linear-gradient(145deg, #1d2b1d, #121b15 78%);
+    }
+    .metric-label { letter-spacing: .01em; }
+    .metric-value { font-variant-numeric: tabular-nums; }
+    .progress-track, .day-bar { background: #2b3a2d; }
+
+    .workspace { gap: 22px; grid-template-columns: minmax(0, 1fr) 350px; }
+    .card {
+      border-color: rgb(160 180 157 / 17%);
+      border-radius: 18px;
+      background: linear-gradient(155deg, rgb(18 27 21 / 98%), rgb(15 23 18 / 98%));
+      box-shadow: 0 12px 32px rgb(0 0 0 / 13%);
+    }
+    .card-heading { padding-top: 24px; padding-bottom: 22px; }
+    .card-heading h2, .settings h2 { font-size: 18px; }
+    .days-count {
+      padding: 8px 11px;
+      background: #24371e;
+      color: #d1f691;
+      letter-spacing: .08em;
+    }
+    .day-summary { min-height: 76px; }
+    .day-summary:focus-visible {
+      position: relative;
+      z-index: 1;
+      outline: 2px solid var(--green);
+      outline-offset: -2px;
+    }
+    .day-row[open] .day-summary { background: #18251b; }
+    .contribution-table th { letter-spacing: .04em; text-transform: uppercase; }
+    .contribution-table tbody tr:hover { background: rgb(255 255 255 / 2%); }
+
+    .settings { padding: 23px; }
+    .field label { color: #bac6b8; font-size: 11px; }
+    .setting-input, .contribution-amount {
+      border-color: #304032;
+      background: #0b120d;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    .setting-input:focus, .contribution-amount:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgb(196 242 119 / 11%);
+    }
+    button { transition: filter .15s ease, border-color .15s ease, background .15s ease; }
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+    .target-save-button {
+      border-color: transparent;
+      box-shadow: 0 5px 15px rgb(196 242 119 / 12%);
+    }
+    .target-save-button:hover { filter: brightness(1.06); }
+    .add-member-button { border-color: #415638; background: #20321c; }
+    .calc-box {
+      border-color: #3a5031;
+      background: linear-gradient(145deg, #1a2818, #131d13);
+    }
+    .note-card { padding: 20px 21px; }
+    footer { border-color: rgb(160 180 157 / 16%); }
+
+    @media (max-width: 900px) {
+      .workspace { grid-template-columns: minmax(0, 1fr) 310px; }
+      .metric { padding: 19px; }
+    }
+    @media (max-width: 600px) {
+      .shell { padding-top: 18px; }
+      .hero { gap: 17px; margin-top: 32px; }
+      h1 { font-size: clamp(40px, 11vw, 56px); }
+      .overview { gap: 10px; }
+      .metric { min-height: 122px; padding: 15px; }
+      .workspace { gap: 14px; }
+      .card-heading { padding-top: 19px; }
+      .settings { padding: 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 <body>
