@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Mbuzi Fund — December Contributions</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000000;
+      --panel: #101511;
+      --panel-soft: #151d16;
+      --line: #283129;
+      --text: #f3f5ef;
+      --muted: #9aa79b;
+      --green: #b7ee65;
+      --green-dark: #1c2a18;
+      --orange: #f0a86b;
+      --red: #e58b7d;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .shell { max-width: 1280px; margin: 0 auto; padding: 28px 36px 48px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 750; letter-spacing: -.03em; }
+    .brand-mark {
+      display: grid; width: 40px; height: 40px; place-items: center;
+      border-radius: 13px; background: var(--green); color: #172010; font-size: 20px;
+    }
+    .season-tag {
+      padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px;
+      background: var(--panel); color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .08em;
+    }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; margin: 42px 0 28px; }
+    .eyebrow { margin: 0 0 12px; color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+    h1 { max-width: 700px; margin: 0; font-size: clamp(38px, 5.5vw, 68px); line-height: .98; letter-spacing: -.065em; }
+    .intro { max-width: 540px; margin: 17px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .date-note { min-width: 250px; padding: 17px 19px; border: 1px solid var(--line); border-radius: 15px; background: var(--panel); color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .date-note strong { display: block; margin-bottom: 3px; color: var(--text); font-size: 14px; }
+
+    .overview {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;
+      margin-bottom: 22px;
+    }
+    .metric { min-width: 0; min-height: 142px; padding: 21px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+    .metric:first-child { background: linear-gradient(145deg, #172218, var(--panel) 70%); }
+    .metric-label { color: var(--muted); font-size: 11px; font-weight: 700; }
+    .metric-value { margin-top: 13px; overflow-wrap: anywhere; font-size: clamp(23px, 2.6vw, 32px); font-weight: 750; letter-spacing: -.05em; }
+    .metric-detail { margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .progress-track { height: 6px; margin-top: 17px; overflow: hidden; border-radius: 10px; background: #2b342c; }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: var(--green); transition: width .2s ease; }
+
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+    .card { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+    .tracker { overflow: hidden; }
+    .card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 22px 23px 20px; }
+    .card-heading h2, .settings h2 { margin: 0; font-size: 17px; letter-spacing: -.025em; }
+    .card-heading p { max-width: 470px; margin: 7px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .days-count { white-space: nowrap; padding: 7px 10px; border-radius: 999px; background: var(--green-dark); color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .04em; }
+    .day-list { border-top: 1px solid var(--line); }
+    .day-row { border-bottom: 1px solid var(--line); }
+    .day-row:last-child { border-bottom: 0; }
+    .day-summary {
+      display: grid; grid-template-columns: 95px minmax(80px, 1fr) 92px 15px;
+      align-items: center; gap: 15px; min-height: 72px; padding: 10px 23px; cursor: pointer; list-style: none;
+      transition: background .15s ease;
+    }
+    .day-summary:hover, .day-row[open] .day-summary { background: var(--panel-soft); }
+    .day-summary::-webkit-details-marker { display: none; }
+    .day-summary::after { content: "+"; color: var(--muted); font-size: 18px; text-align: right; }
+    .day-row[open] .day-summary::after { content: "−"; color: var(--green); }
+    .day-date { font-size: 13px; font-weight: 700; }
+    .day-date small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; font-weight: 500; }
+    .day-bar-wrap { display: flex; align-items: center; gap: 9px; }
+    .day-bar { flex: 1; height: 5px; overflow: hidden; border-radius: 10px; background: #2b342c; }
+    .day-bar span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--green); }
+    .day-count { min-width: 41px; color: var(--muted); font-size: 11px; text-align: right; }
+    .day-status { justify-self: end; color: var(--muted); font-size: 10px; text-align: right; }
+    .day-status.done { color: var(--green); }
+    .today-label { color: var(--orange); }
+    .contribution-table-wrap { overflow-x: auto; padding: 0 23px 17px; }
+    .contribution-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .contribution-table th, .contribution-table td { padding: 10px; border-bottom: 1px solid var(--line); font-size: 12px; }
+    .contribution-table th { color: var(--muted); font-size: 10px; font-weight: 700; }
+    .contribution-table td:last-child, .contribution-table th:last-child { width: 170px; text-align: right; }
+    .contribution-table tfoot td { border-bottom: 0; color: var(--green); font-weight: 750; }
+    .contribution-amount { width: 100%; max-width: 150px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; outline: none; background: #080b09; color: var(--text); text-align: right; }
+    .contribution-amount:focus { border-color: var(--green); }
+
+    .sidebar { display: grid; gap: 14px; }
+    .settings { padding: 21px; }
+    .settings > p { margin: 7px 0 18px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .field { margin-top: 15px; }
+    .field label { display: block; margin-bottom: 7px; color: var(--muted); font-size: 10px; font-weight: 700; }
+    .input-wrap { position: relative; }
+    .prefix { position: absolute; top: 50%; left: 12px; color: var(--muted); font-size: 12px; transform: translateY(-50%); }
+    .setting-input {
+      width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px;
+      outline: none; background: #080b09; color: var(--text); font-size: 13px;
+    }
+    .setting-input.with-prefix { padding-left: 46px; }
+    .setting-input:focus { border-color: var(--green); }
+    .hint { margin-top: 6px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .target-save-button { width: 100%; margin-top: 9px; padding: 11px; border: 1px solid #455b38; border-radius: 9px; background: var(--green); color: #172010; cursor: pointer; font-size: 12px; font-weight: 800; }
+    .target-save-button:hover, .add-member-button:hover { filter: brightness(1.08); }
+    .target-save-status { min-height: 16px; margin-top: 6px; color: var(--muted); font-size: 10px; }
+    .member-list { display: grid; max-height: 290px; gap: 8px; overflow-y: auto; padding-right: 4px; scrollbar-color: var(--line) transparent; }
+    .member-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+    .member-row .setting-input { padding: 9px 10px; font-size: 12px; }
+    .remove-member { padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: transparent; color: var(--muted); cursor: pointer; font-size: 11px; }
+    .remove-member:hover { border-color: var(--red); color: var(--red); }
+    .add-member-form { display: flex; gap: 8px; margin-top: 10px; }
+    .add-member-form .setting-input { min-width: 0; }
+    .add-member-button { padding: 0 14px; border: 1px solid #455b38; border-radius: 9px; background: var(--green-dark); color: var(--green); cursor: pointer; font-size: 12px; font-weight: 700; }
+    .calc-box { margin-top: 18px; padding: 15px; border: 1px solid #35452d; border-radius: 12px; background: #151e13; }
+    .calc-box span { display: block; color: #a7b49d; font-size: 10px; font-weight: 650; }
+    .calc-box strong { display: block; margin-top: 5px; color: var(--green); font-size: 24px; letter-spacing: -.04em; }
+    .calc-box small { display: block; margin-top: 5px; color: #a7b49d; font-size: 10px; line-height: 1.5; }
+    .reset-button {
+      width: 100%; margin-top: 14px; padding: 10px; border: 1px solid var(--line); border-radius: 9px;
+      background: transparent; color: var(--muted); cursor: pointer; font-size: 11px;
+    }
+    .reset-button:hover { border-color: var(--red); color: var(--red); }
+    .note-card { padding: 18px 20px; background: #0b0e0b; }
+    .note-card strong { display: block; margin-bottom: 7px; font-size: 12px; }
+    .note-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .empty-state { padding: 28px 20px; color: var(--muted); font-size: 12px; text-align: center; }
+    footer { display: flex; justify-content: space-between; gap: 18px; margin-top: 28px; padding-top: 17px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.6; }
+
+    @media (max-width: 900px) {
+      .shell { padding-right: 24px; padding-left: 24px; }
+      .workspace { grid-template-columns: minmax(0, 1fr) 310px; gap: 14px; }
+      .day-summary { grid-template-columns: 82px minmax(70px, 1fr) 76px 14px; gap: 10px; }
+      .day-status { font-size: 9px; }
+      .settings { padding: 17px; }
+    }
+    @media (max-width: 740px) {
+      .hero { grid-template-columns: 1fr; gap: 18px; margin-top: 34px; }
+      .date-note { justify-self: start; min-width: 0; }
+      .workspace { grid-template-columns: 1fr; }
+      .sidebar { grid-template-columns: minmax(0, 1.4fr) minmax(220px, .8fr); align-items: start; }
+      .settings { padding: 20px; }
+      .member-list { max-height: 250px; }
+    }
+    @media (max-width: 600px) {
+      .shell { padding: 18px 15px 32px; }
+      header { padding-bottom: 16px; }
+      .brand { font-size: 14px; }
+      .brand-mark { width: 36px; height: 36px; }
+      .season-tag { max-width: 48%; padding: 7px 9px; font-size: 9px; text-align: center; }
+      .hero { margin: 30px 0 22px; }
+      h1 { font-size: clamp(38px, 11vw, 54px); }
+      .intro { margin-top: 13px; font-size: 13px; }
+      .overview { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .metric { min-height: 118px; padding: 15px; border-radius: 13px; }
+      .metric-value { margin-top: 9px; font-size: clamp(21px, 6vw, 28px); }
+      .metric-detail { font-size: 10px; }
+      .workspace { gap: 13px; }
+      .card-heading { padding: 18px 15px 16px; }
+      .card-heading h2, .settings h2 { font-size: 16px; }
+      .day-summary { grid-template-columns: 74px minmax(0, 1fr) 66px 12px; gap: 7px; min-height: 66px; padding: 9px 12px; }
+      .day-date { font-size: 11px; }
+      .day-date small { font-size: 9px; }
+      .day-count { min-width: 34px; font-size: 10px; }
+      .day-status { font-size: 8px; }
+      .contribution-table-wrap { padding: 0 11px 12px; }
+      .contribution-table td:last-child, .contribution-table th:last-child { width: 125px; }
+      .contribution-table th, .contribution-table td { padding: 8px 6px; }
+      .contribution-table td, .contribution-amount { font-size: 11px; }
+      .contribution-amount { max-width: 120px; }
+      .sidebar { grid-template-columns: 1fr; }
+      .settings { padding: 18px; }
+      .member-list { max-height: 260px; }
+      footer { flex-direction: column; gap: 7px; }
+    }
+    @media (max-width: 380px) {
+      .season-tag { font-size: 8px; letter-spacing: .04em; }
+      .day-summary { grid-template-columns: 66px minmax(0, 1fr) 58px 10px; gap: 5px; padding-right: 9px; padding-left: 9px; }
+      .day-status { font-size: 7px; }
+      .day-date { font-size: 10px; }
+      .day-count { min-width: 29px; font-size: 9px; }
+      .days-count { padding: 6px 8px; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span> Mbuzi Fund</div>
+      <div class="season-tag">DECEMBER CONTRIBUTIONS · 2026</div>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Weekly contributions, one big December</p>
+        <h1>Let’s make this one happen.</h1>
+        <p class="intro">A shared pot for the crew. Record how much each person sends every week and watch the fund grow.</p>
+      </div>
+      <div class="date-note"><strong>November 1 — December 1, 2026</strong>5 weekly periods · Contributions due Saturdays</div>
+    </section>
+
+    <section class="overview" aria-label="Fund overview">
+      <article class="metric">
+        <div class="metric-label">Raised so far</div>
+        <div class="metric-value" id="raised-value">KSh 0</div>
+        <div class="metric-detail" id="raised-detail">0% of the KSh 10,000 goal</div>
+        <div class="progress-track" role="progressbar" aria-label="Fundraising progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-fill" id="goal-progress"></div>
+        </div>
+      </article>
+      <article class="metric">
+        <div class="metric-label">Target</div>
+        <div class="metric-value" id="target-value">KSh 10,000</div>
+        <div class="metric-detail">Our shared goal for December</div>
+      </article>
+      <article class="metric">
+        <div class="metric-label">Members</div>
+        <div class="metric-value" id="contributors-value">20</div>
+        <div class="metric-detail" id="contributors-detail">Add your group members</div>
+      </article>
+      <article class="metric">
+        <div class="metric-label" id="fine-label">Fine exposure</div>
+        <div class="metric-value" id="fine-value">KSh 0</div>
+        <div class="metric-detail" id="fine-detail">KSh 200 once per member with unpaid contributions after Dec 1</div>
+      </article>
+    </section>
+
+    <div class="workspace">
+      <section class="card tracker" aria-labelledby="tracker-title">
+        <div class="card-heading">
+          <div>
+            <h2 id="tracker-title">Weekly check-in</h2>
+            <p>Open a week and enter the amount each person sent. Contributions are due Saturdays; the final period is due December 1.</p>
+          </div>
+          <span class="days-count">5 PERIODS</span>
+        </div>
+        <div class="hint" id="legacy-note" style="display:none;padding:0 24px 14px"></div>
+        <div class="day-list" id="day-list"></div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="card settings" aria-labelledby="settings-title">
+          <h2 id="settings-title">Plan your contributions</h2>
+          <p>Adjust the goal and manage the named members who are contributing.</p>
+          <div class="field">
+            <form id="goal-form">
+              <label for="goal-input">Target amount</label>
+              <div class="input-wrap"><span class="prefix">KSh</span><input class="setting-input with-prefix" id="goal-input" type="number" min="1" step="100" value="10000" inputmode="numeric" required></div>
+              <button class="target-save-button" type="submit">Save target</button>
+              <div class="hint">Your weekly contribution updates when you save.</div>
+              <div class="target-save-status" id="target-save-status" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+          <div class="field">
+            <label>Group members</label>
+            <div class="member-list" id="member-list"></div>
+            <form class="add-member-form" id="add-member-form">
+              <input class="setting-input" id="new-member-input" type="text" maxlength="60" placeholder="Add a member" aria-label="New member name" required>
+              <button class="add-member-button" type="submit">Add</button>
+            </form>
+            <div class="hint">Replace the sample names with your group’s names. Removing a member also removes their payment history.</div>
+          </div>
+          <div class="calc-box" aria-live="polite">
+            <span>Each person, each week</span>
+            <strong id="weekly-amount">KSh 100</strong>
+            <small id="weekly-explanation">5 periods · 20 people · KSh 10,000 projected total</small>
+          </div>
+          <button class="reset-button" id="reset-button" type="button">Reset all contribution records</button>
+        </section>
+        <section class="card note-card">
+          <strong>How to use this tracker</strong>
+          <p>Enter the amount each person sends for each week. The final shorter period, November 29–December 1, is due Tuesday, December 1. Anyone with no payment recorded for a week after December 1, 2026 owes a one-time KSh 200 fine. This tracker does not collect or transfer money.</p>
+        </section>
+      </aside>
+    </div>
+
+    <footer>
+      <span>Made for the crew, one week at a time.</span>
+      <span>Records are saved only in this browser on this device.</span>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = "mbuzi-fund-tracker-2026-v4";
+      const PREVIOUS_STORAGE_KEYS = ["mbuzi-fund-tracker-2026-v3", "mbuzi-fund-tracker-2026-v2", "mbuzi-fund-tracker-2026-v1"];
+      const DEADLINE = new Date(2026, 11, 1);
+      const PERIODS = Array.from({ length: 5 }, (_, index) => {
+        const periodStart = new Date(2026, 10, 1 + index * 7);
+        const periodEnd = new Date(periodStart);
+        periodEnd.setDate(periodStart.getDate() + 6);
+        if (periodEnd > DEADLINE) periodEnd.setTime(DEADLINE.getTime());
+        return { key: dateKey(periodStart), start: periodStart, end: periodEnd };
+      });
+      const FINE_AMOUNT = 200;
+      const numberFormat = new Intl.NumberFormat("en-KE", { maximumFractionDigits: 0 });
+      const state = loadState();
+      const goalInput = document.getElementById("goal-input");
+      const dayList = document.getElementById("day-list");
+      const memberList = document.getElementById("member-list");
+
+      function loadState() {
+        try {
+          const current = localStorage.getItem(STORAGE_KEY);
+          let previousKey = null;
+          let previousValue = null;
+          if (!current) {
+            for (const key of PREVIOUS_STORAGE_KEYS) {
+              const value = localStorage.getItem(key);
+              if (value) {
+                previousKey = key;
+                previousValue = value;
+                break;
+              }
+            }
+          }
+          const saved = JSON.parse(current || previousValue || "null");
+          if (!saved || typeof saved !== "object") return createDefaultState();
+
+          if (Array.isArray(saved.members)) {
+            const migrated = {
+              goal: validNumber(saved.goal, 10000, 1, 100000000),
+              members: saved.members.slice(0, 500).map((member, index) => ({
+                id: typeof member.id === "string" && member.id ? member.id : createId(),
+                name: typeof member.name === "string" && member.name.trim() ? member.name.trim() : `Member ${index + 1}`
+              })),
+              payments: {},
+              legacyRaised: validNumber(saved.legacyRaised, 0, 0, 1000000000)
+            };
+            const oldPayments = saved.payments && typeof saved.payments === "object" ? saved.payments : {};
+            Object.entries(oldPayments).forEach(([key, payments]) => {
+              const period = periodForDate(storedDate(key, previousKey === "mbuzi-fund-tracker-2026-v2"));
+              if (!period || !payments || typeof payments !== "object") return;
+              if (!migrated.payments[period.key]) migrated.payments[period.key] = {};
+              migrated.members.forEach((member) => {
+                const amount = paymentAmount(payments[member.id], migrated.goal, migrated.members.length);
+                if (amount > 0) migrated.payments[period.key][member.id] = amount;
+              });
+            });
+            if (previousKey === "mbuzi-fund-tracker-2026-v2" && saved.legacyPaid && typeof saved.legacyPaid === "object") {
+              const oldDailyAmount = migrated.members.length
+                ? Math.ceil(migrated.goal / (migrated.members.length * 31))
+                : 0;
+              const oldCount = Object.values(saved.legacyPaid).reduce(
+                (sum, count) => sum + validNumber(count, 0, 0, 500),
+                0
+              );
+              migrated.legacyRaised += oldCount * oldDailyAmount;
+            }
+            return migrated;
+          }
+
+          let legacyRaised = 0;
+          if (saved.paid && typeof saved.paid === "object") {
+            const oldPeople = validNumber(saved.people, 5, 1, 500);
+            const oldDailyAmount = Math.ceil(validNumber(saved.goal, 10000, 1, 100000000) / (oldPeople * 31));
+            const oldCount = Object.values(saved.paid).reduce(
+              (sum, count) => sum + validNumber(count, 0, 0, oldPeople),
+              0
+            );
+            legacyRaised = oldCount * oldDailyAmount;
+          }
+          return {
+            goal: validNumber(saved.goal, 10000, 1, 100000000),
+            members: Array.from({ length: validNumber(saved.people, 5, 1, 500) }, (_, index) => ({
+              id: createId(),
+              name: `Member ${index + 1}`
+            })),
+            payments: {},
+            legacyRaised
+          };
+        } catch (error) {
+          console.error("Could not load saved contribution data.", error);
+          return createDefaultState();
+        }
+      }
+
+      function createDefaultState() {
+        return {
+          goal: 10000,
+          members: Array.from({ length: 20 }, (_, index) => ({ id: createId(), name: `Member ${index + 1}` })),
+          payments: {},
+          legacyRaised: 0
+        };
+      }
+
+      function createId() {
+        return typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      }
+
+      function validNumber(value, fallback, min, max) {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? Math.min(max, Math.max(min, Math.floor(parsed))) : fallback;
+      }
+
+      function paymentAmount(value, goal, people) {
+        if (value === true) return people ? Math.ceil(goal / (people * PERIODS.length)) : 0;
+        return validNumber(value, 0, 0, 1000000000);
+      }
+
+      function money(amount) {
+        return "KSh " + numberFormat.format(amount);
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (error) {
+          console.error("Could not save contribution data.", error);
+          alert("Your browser could not save this update. Check that local storage is enabled.");
+        }
+      }
+
+      function dateKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      function storedDate(key, oldDailyKey) {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) return null;
+        const date = new Date(`${key}T00:00:00`);
+        if (oldDailyKey) date.setDate(date.getDate() + 1);
+        return date;
+      }
+
+      function periodForDate(date) {
+        if (!date) return null;
+        return PERIODS.find((period) => date >= period.start && date <= period.end) || null;
+      }
+
+      function memberPaidCount(key) {
+        const payments = state.payments[key];
+        if (!payments || typeof payments !== "object") return 0;
+        return state.members.reduce((count, member) => count + (paymentAmount(payments[member.id], state.goal, state.members.length) > 0 ? 1 : 0), 0);
+      }
+
+      function periodTotal(key) {
+        const payments = state.payments[key];
+        if (!payments || typeof payments !== "object") return 0;
+        return state.members.reduce((total, member) => total + paymentAmount(payments[member.id], state.goal, state.members.length), 0);
+      }
+
+      function renderMembers() {
+        memberList.replaceChildren();
+        if (state.members.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "hint";
+          empty.textContent = "Add at least one member to track contributions.";
+          memberList.append(empty);
+        }
+
+        state.members.forEach((member) => {
+          const row = document.createElement("div");
+          row.className = "member-row";
+          const nameInput = document.createElement("input");
+          nameInput.className = "setting-input";
+          nameInput.type = "text";
+          nameInput.maxLength = 60;
+          nameInput.value = member.name;
+          nameInput.setAttribute("aria-label", "Member name");
+          nameInput.addEventListener("input", () => {
+            const name = nameInput.value.trim();
+            if (!name || name === member.name) return;
+            member.name = name;
+            saveState();
+          });
+          nameInput.addEventListener("change", () => {
+            const name = nameInput.value.trim();
+            if (!name) {
+              nameInput.value = member.name;
+              return;
+            }
+            member.name = name;
+            saveState();
+            render();
+          });
+
+          const removeButton = document.createElement("button");
+          removeButton.className = "remove-member";
+          removeButton.type = "button";
+          removeButton.textContent = "Remove";
+          removeButton.setAttribute("aria-label", `Remove ${member.name}`);
+          removeButton.addEventListener("click", () => {
+            const hasPayments = Object.values(state.payments).some((payments) => payments && paymentAmount(payments[member.id], state.goal, state.members.length) > 0);
+            const prompt = hasPayments
+              ? `Remove ${member.name} and all their recorded payments?`
+              : `Remove ${member.name}?`;
+            if (!window.confirm(prompt)) return;
+            state.members = state.members.filter((candidate) => candidate.id !== member.id);
+            Object.values(state.payments).forEach((payments) => {
+              if (payments) delete payments[member.id];
+            });
+            saveState();
+            render();
+          });
+          row.append(nameInput, removeButton);
+          memberList.append(row);
+        });
+      }
+
+      function renderDays() {
+        const openPeriods = new Set(
+          Array.from(dayList.querySelectorAll(".day-row[open]"), (row) => row.dataset.periodKey)
+        );
+        dayList.replaceChildren();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        PERIODS.forEach((period) => {
+          const key = period.key;
+          const paid = memberPaidCount(key);
+          const starts = period.start.toLocaleDateString("en-KE", { day: "numeric", month: "short" });
+          const ends = period.end.toLocaleDateString("en-KE", { day: "numeric", month: "short" });
+          const dateLabel = `${starts}–${ends}`;
+          const isCurrentPeriod = today >= period.start && today <= period.end;
+          const dueLabel = period.end.getTime() === DEADLINE.getTime()
+            ? "Due Tue, Dec 1"
+            : `Due ${period.end.toLocaleDateString("en-KE", { weekday: "short" })}`;
+          const complete = state.members.length > 0 && paid === state.members.length;
+          const row = document.createElement("details");
+          row.className = "day-row";
+          row.dataset.periodKey = key;
+          row.open = openPeriods.has(key);
+          const summary = document.createElement("summary");
+          summary.className = "day-summary";
+          summary.innerHTML = `
+            <div class="day-date">${dateLabel}<small class="${isCurrentPeriod ? "today-label" : ""}">${isCurrentPeriod ? "This week" : dueLabel}</small></div>
+            <div class="day-bar-wrap">
+              <div class="day-bar" aria-hidden="true"><span style="width:${state.members.length ? (paid / state.members.length) * 100 : 0}%"></span></div>
+              <span class="day-count">${paid}/${state.members.length}</span>
+            </div>
+            <span class="day-status ${complete ? "done" : ""}">${complete ? "Complete" : paid ? "In progress" : "Not started"}</span>
+          `;
+          const tableWrap = document.createElement("div");
+          tableWrap.className = "contribution-table-wrap";
+          const table = document.createElement("table");
+          table.className = "contribution-table";
+          const tableHead = document.createElement("thead");
+          tableHead.innerHTML = "<tr><th scope=\"col\">Person</th><th scope=\"col\">Amount sent (KSh)</th></tr>";
+          const tableBody = document.createElement("tbody");
+
+          state.members.forEach((member) => {
+            const tableRow = document.createElement("tr");
+            const nameCell = document.createElement("td");
+            nameCell.textContent = member.name;
+            const amountCell = document.createElement("td");
+            const amountInput = document.createElement("input");
+            amountInput.className = "contribution-amount";
+            amountInput.type = "number";
+            amountInput.min = "0";
+            amountInput.step = "1";
+            amountInput.inputMode = "numeric";
+            amountInput.value = String(paymentAmount(state.payments[key]?.[member.id], state.goal, state.members.length) || "");
+            amountInput.setAttribute("aria-label", `Amount ${member.name} sent for ${dateLabel}, in Kenyan shillings`);
+            amountInput.addEventListener("change", () => {
+              const amount = validNumber(amountInput.value, 0, 0, 1000000000);
+              if (!state.payments[key]) state.payments[key] = {};
+              if (amount > 0) state.payments[key][member.id] = amount;
+              else delete state.payments[key][member.id];
+              saveState();
+              render();
+            });
+            amountCell.append(amountInput);
+            tableRow.append(nameCell, amountCell);
+            tableBody.append(tableRow);
+          });
+
+          if (state.members.length === 0) {
+            const emptyRow = document.createElement("tr");
+            const emptyCell = document.createElement("td");
+            emptyCell.colSpan = 2;
+            emptyCell.className = "empty-state";
+            emptyCell.textContent = "Add group members to record contributions.";
+            emptyRow.append(emptyCell);
+            tableBody.append(emptyRow);
+          }
+          const tableFoot = document.createElement("tfoot");
+          tableFoot.innerHTML = `<tr><td>Total received</td><td>${money(periodTotal(key))}</td></tr>`;
+          table.append(tableHead, tableBody, tableFoot);
+          tableWrap.append(table);
+          row.append(summary, tableWrap);
+          dayList.append(row);
+        });
+      }
+
+      function renderSummary() {
+        const people = state.members.length;
+        const weeklyPerPerson = people ? Math.ceil(state.goal / (people * PERIODS.length)) : 0;
+        const projectedTotal = weeklyPerPerson * people * PERIODS.length;
+        const completedMembers = state.members.filter((member) =>
+          PERIODS.every((period) => paymentAmount(state.payments[period.key]?.[member.id], state.goal, people) > 0)
+        ).length;
+        const incompleteMembers = people - completedMembers;
+        const now = new Date();
+        now.setHours(0, 0, 0, 0);
+        const pastDuePeriods = PERIODS.filter((period) => now > period.end);
+        const atRiskMembers = state.members.filter((member) =>
+          pastDuePeriods.some((period) => paymentAmount(state.payments[period.key]?.[member.id], state.goal, people) === 0)
+        ).length;
+        const finesDue = now > DEADLINE ? incompleteMembers : 0;
+        const fineAmount = (now > DEADLINE ? finesDue : atRiskMembers) * FINE_AMOUNT;
+        const raised = PERIODS.reduce((total, period) => total + periodTotal(period.key), 0) + state.legacyRaised;
+        const percent = state.goal ? Math.min(100, (raised / state.goal) * 100) : 0;
+
+        document.getElementById("raised-value").textContent = money(raised);
+        document.getElementById("raised-detail").textContent = `${Math.floor(percent)}% of the ${money(state.goal)} goal`;
+        document.getElementById("target-value").textContent = money(state.goal);
+        document.getElementById("contributors-value").textContent = numberFormat.format(people);
+        document.getElementById("contributors-detail").textContent =
+          `${completedMembers} of ${people} members paid all ${PERIODS.length} weeks`;
+        document.getElementById("weekly-amount").textContent = money(weeklyPerPerson);
+        document.getElementById("weekly-explanation").textContent =
+          people
+            ? `${PERIODS.length} weekly periods · ${people} people · ${money(projectedTotal)} projected total (${money(projectedTotal - state.goal)} above target)`
+            : "Add group members to calculate the weekly contribution.";
+        document.getElementById("fine-label").textContent = now > DEADLINE ? "Fines due" : "Fine exposure";
+        document.getElementById("fine-value").textContent = money(fineAmount);
+        document.getElementById("fine-detail").textContent = now > DEADLINE
+          ? `${finesDue} member${finesDue === 1 ? "" : "s"} owe a one-time KSh 200 fine`
+          : pastDuePeriods.length === 0
+            ? "No weekly contributions overdue · KSh 200 per incomplete member after Dec 1"
+            : `${atRiskMembers} member${atRiskMembers === 1 ? "" : "s"} have a missed week · assessed after Dec 1`;
+        document.getElementById("goal-progress").style.width = `${percent}%`;
+        document.querySelector('[role="progressbar"]').setAttribute("aria-valuenow", String(Math.round(percent)));
+        const legacyNote = document.getElementById("legacy-note");
+        legacyNote.style.display = state.legacyRaised > 0 ? "block" : "none";
+        legacyNote.textContent = state.legacyRaised > 0
+          ? `${money(state.legacyRaised)} from earlier daily records is preserved in the raised total. Record amounts above for accurate fine tracking.`
+          : "";
+      }
+
+      function render() {
+        renderSummary();
+        renderMembers();
+        renderDays();
+      }
+
+      goalInput.value = String(state.goal);
+      function saveGoal() {
+        if (!goalInput.value || Number(goalInput.value) < 1) {
+          goalInput.value = String(state.goal);
+          document.getElementById("target-save-status").textContent = "Enter an amount greater than zero.";
+          return;
+        }
+        state.goal = validNumber(goalInput.value, 10000, 1, 100000000);
+        goalInput.value = String(state.goal);
+        saveState();
+        render();
+        document.getElementById("target-save-status").textContent = "Target saved on this device.";
+      }
+      goalInput.addEventListener("change", saveGoal);
+      document.getElementById("goal-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        saveGoal();
+      });
+      document.getElementById("add-member-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = document.getElementById("new-member-input");
+        const name = input.value.trim();
+        if (!name || state.members.length >= 500) return;
+        state.members.push({ id: createId(), name });
+        input.value = "";
+        saveState();
+        render();
+      });
+      document.getElementById("reset-button").addEventListener("click", () => {
+        if (!window.confirm("Reset all weekly contribution check-ins? Your goal and member list will stay the same.")) return;
+        state.payments = {};
+        state.legacyRaised = 0;
+        saveState();
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
