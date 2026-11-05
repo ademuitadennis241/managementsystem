@@ -236,15 +236,115 @@
     h1 { max-width: 760px; font-size: clamp(42px, 6vw, 76px); }
     .intro { max-width: 570px; font-size: 15px; }
     .date-note {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      min-width: 280px;
+      padding: 18px 90px 18px 20px;
       border-color: rgb(160 180 157 / 20%);
       border-radius: 17px;
       background: linear-gradient(145deg, #172319, #111a14 75%);
       box-shadow: 0 12px 36px rgb(0 0 0 / 14%);
     }
-    .date-note strong { font-size: 15px; }
+    .date-note::after {
+      position: absolute;
+      z-index: -1;
+      top: 50%;
+      right: -24px;
+      width: 120px;
+      height: 120px;
+      border: 1px solid rgb(196 242 119 / 16%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 12px rgb(196 242 119 / 4%), 0 0 0 26px rgb(196 242 119 / 3%);
+      content: "";
+      transform: translateY(-50%);
+    }
+    .campaign-kicker {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 12px;
+      color: #b6c4b1;
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .campaign-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgb(196 242 119 / 55%);
+    }
+    .date-note strong { margin-bottom: 6px; font-size: 15px; white-space: nowrap; }
+    .date-note-detail { display: block; color: var(--muted); font-size: 11px; }
+
+    .feast-section { margin: 0 0 26px; }
+    .feast-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .feast-heading h2 { margin: 0; font-size: 16px; letter-spacing: -.025em; }
+    .feast-heading p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+    .feast-hint { display: none; color: var(--muted); font-size: 10px; white-space: nowrap; }
+    .feast-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+    .feast-photo {
+      position: relative;
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      aspect-ratio: 1.55;
+      border: 1px solid rgb(160 180 157 / 20%);
+      border-radius: 16px;
+      background: #18221a;
+      box-shadow: 0 10px 24px rgb(0 0 0 / 15%);
+      isolation: isolate;
+    }
+    .feast-photo::after {
+      position: absolute;
+      z-index: 0;
+      inset: 30% 0 0;
+      background: linear-gradient(transparent, rgb(5 9 6 / 88%));
+      content: "";
+      pointer-events: none;
+    }
+    .feast-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .45s ease;
+    }
+    .feast-photo:hover img { transform: scale(1.045); }
+    .feast-caption {
+      position: absolute;
+      z-index: 1;
+      right: 15px;
+      bottom: 14px;
+      left: 15px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+    .feast-caption span {
+      display: block;
+      margin-bottom: 4px;
+      color: #d3f69e;
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
 
     .overview { gap: 16px; margin-bottom: 24px; }
     .metric {
+      position: relative;
+      overflow: hidden;
       min-height: 150px;
       padding: 23px;
       border-color: rgb(160 180 157 / 17%);
@@ -252,6 +352,18 @@
       background: linear-gradient(145deg, rgb(20 30 23 / 96%), rgb(15 23 18 / 96%));
       box-shadow: 0 10px 28px rgb(0 0 0 / 12%);
       transition: transform .18s ease, border-color .18s ease;
+    }
+    .metric::after {
+      position: absolute;
+      top: -34px;
+      right: -30px;
+      width: 94px;
+      height: 94px;
+      border: 1px solid rgb(196 242 119 / 8%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 12px rgb(196 242 119 / 2%);
+      content: "";
+      pointer-events: none;
     }
     .metric:hover { transform: translateY(-2px); border-color: rgb(196 242 119 / 30%); }
     .metric:first-child {
@@ -285,6 +397,18 @@
       outline-offset: -2px;
     }
     .day-row[open] .day-summary { background: #18251b; }
+    .day-status {
+      padding: 5px 8px;
+      border: 1px solid rgb(160 180 157 / 14%);
+      border-radius: 999px;
+      background: rgb(255 255 255 / 3%);
+    }
+    .day-status.done {
+      border-color: rgb(196 242 119 / 20%);
+      background: rgb(196 242 119 / 8%);
+    }
+    .today-label { color: var(--orange); font-weight: 650 !important; }
+    .day-bar span { box-shadow: 0 0 10px rgb(196 242 119 / 25%); }
     .contribution-table th { letter-spacing: .04em; text-transform: uppercase; }
     .contribution-table tbody tr:hover { background: rgb(255 255 255 / 2%); }
 
@@ -314,7 +438,7 @@
       border-color: #3a5031;
       background: linear-gradient(145deg, #1a2818, #131d13);
     }
-    .note-card { padding: 20px 21px; }
+    .note-card { padding: 20px 21px; background: linear-gradient(145deg, #121b15, #0e1510); }
     footer { border-color: rgb(160 180 157 / 16%); }
 
     @media (max-width: 900px) {
@@ -325,11 +449,37 @@
       .shell { padding-top: 18px; }
       .hero { gap: 17px; margin-top: 32px; }
       h1 { font-size: clamp(40px, 11vw, 56px); }
+      .date-note { width: 100%; min-width: 0; padding: 16px 76px 16px 17px; }
+      .campaign-kicker { margin-bottom: 9px; }
+      .date-note strong { font-size: 14px; }
+      .date-note-detail { font-size: 10px; }
+      .feast-section { margin-bottom: 22px; }
+      .feast-heading { display: block; }
+      .feast-heading h2 { font-size: 15px; }
+      .feast-hint { display: block; margin-top: 7px; text-align: right; }
+      .feast-gallery {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 1px 1px 9px;
+        scroll-padding-inline: 1px;
+        scroll-snap-type: x mandatory;
+        scrollbar-color: var(--line) transparent;
+        scrollbar-width: thin;
+      }
+      .feast-photo { flex: 0 0 82%; aspect-ratio: 1.3; scroll-snap-align: start; }
+      .feast-caption { right: 13px; bottom: 12px; left: 13px; font-size: 12px; }
       .overview { gap: 10px; }
       .metric { min-height: 122px; padding: 15px; }
       .workspace { gap: 14px; }
       .card-heading { padding-top: 19px; }
       .settings { padding: 19px; }
+      .day-status { padding: 4px 6px; }
+    }
+    @media (max-width: 380px) {
+      .date-note strong { font-size: 13px; }
+      .day-status { padding: 3px 4px; }
+      .feast-photo { flex-basis: 89%; aspect-ratio: 1.22; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
@@ -349,7 +499,35 @@
         <h1>Let’s make this one happen.</h1>
         <p class="intro">A shared pot for the crew. Record how much each person sends every week and watch the fund grow.</p>
       </div>
-      <div class="date-note"><strong>November 1 — December 1, 2026</strong>5 weekly periods · Contributions due Saturdays</div>
+      <div class="date-note">
+        <span class="campaign-kicker"><span class="campaign-dot" aria-hidden="true"></span>Our December campaign</span>
+        <strong>November 1 — December 1, 2026</strong>
+        <span class="date-note-detail">5 weekly periods · Final contributions due Dec 1</span>
+      </div>
+    </section>
+
+    <section class="feast-section" aria-labelledby="feast-title">
+      <div class="feast-heading">
+        <div>
+          <h2 id="feast-title">A feast worth looking forward to</h2>
+          <p>Good food, shared moments, one December together.</p>
+        </div>
+        <span class="feast-hint">Swipe to explore →</span>
+      </div>
+      <div class="feast-gallery">
+        <figure class="feast-photo">
+          <img src="assets/mbuzi-stew.png" alt="A bowl of richly spiced stew" loading="lazy" decoding="async">
+          <figcaption class="feast-caption"><span>Slow cooked</span>A rich, warming favorite</figcaption>
+        </figure>
+        <figure class="feast-photo">
+          <img src="assets/mbuzi-roast.png" alt="A golden roast served with potatoes and herbs" loading="lazy" decoding="async">
+          <figcaption class="feast-caption"><span>From the oven</span>Made for sharing</figcaption>
+        </figure>
+        <figure class="feast-photo">
+          <img src="assets/mbuzi-grill.png" alt="Meat grilling over glowing charcoal" loading="lazy" decoding="async">
+          <figcaption class="feast-caption"><span>Fresh off the grill</span>Gather round</figcaption>
+        </figure>
+      </div>
     </section>
 
     <section class="overview" aria-label="Fund overview">
